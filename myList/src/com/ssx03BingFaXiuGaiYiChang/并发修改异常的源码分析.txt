@@ -1,0 +1,51 @@
+public interface List<E>{
+    Iterator<E> iterator();
+    boolean add(E e);
+}
+
+public abstract class AbstractList <E> {
+   protected int modCount = 0;//一开始两个值都是0
+}
+
+public class ArrayList<E> extends AbstractList <E> implements List<E>{
+
+    public boolean add(E e) {
+        modCount++;
+        add(e, elementData, size);
+        return true;
+    }
+
+    public Iterator<E> iterator() {
+        return new Itr();
+    }
+
+    private class Itr implements Iterator<E> {
+
+            int expectedModCount = modCount;
+        /*
+            modCount:实际修改集合次数
+            expectedModCount:预期修改集合的次数
+        */
+            public E next() {
+            刚进来就会判断两个值是否相等
+                checkForComodification();
+                int i = cursor;
+                if (i >= size)
+                    throw new NoSuchElementException();
+                Object[] elementData = ArrayList.this.elementData;
+                if (i >= elementData.length)
+                    throw new ConcurrentModificationException();
+                cursor = i + 1;
+                return (E) elementData[lastRet = i];
+            }
+
+            判断:如果两个值不相等就会抛出并发修改异常
+            modCount 是修改集合的次数
+            expectedModCount 预期修改集合的次数
+
+            final void checkForComodification() {
+                if (modCount != expectedModCount)
+                    throw new ConcurrentModificationException();
+            }
+    }
+}

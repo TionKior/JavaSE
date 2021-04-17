@@ -1,0 +1,2 @@
+className=com.ssx06FanSheLianXi.Teacher
+methodName=teach
