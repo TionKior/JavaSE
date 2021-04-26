@@ -23,6 +23,5 @@ public class MapDemo01 {
             System.out.println(key+","+value);
         }
 
-
     }
 }
